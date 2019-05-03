@@ -35,7 +35,7 @@ public class OrdersWriter {
         return sb.append("]}").toString();
     }
 
-    private void addProduct(StringBuffer sb, Product p) {
+    private void addProduct(StringBuffer sb, Product product) {
         addChamp(sb, "{", "\"code\": \"", product.getCode());
         addChamp(sb, "\", ", "\"color\": \"", getColorFor(product));
         sb.append("\", ");
