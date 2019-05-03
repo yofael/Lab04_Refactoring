@@ -21,10 +21,10 @@ public class OrdersWriter {
         return sb.append("]}").toString();
     }
 
-    private void addOrder(StringBuffer sb ,Order order) {
+    private void addOrder(StringBuffer sb, Order order) {
         sb.append("{");
-        addChamp(sb, "\"id\": ", "", String.valueOf(order.getOrderId()));
-        sb.append(", ");
+        addChamp(sb, "id", order.getOrderId());
+
         sb.append("\"products\": [");
         for (int j = 0; j < order.getProductsCount(); j++) {
             addProduct(sb, order.getProduct(j));
@@ -37,23 +37,32 @@ public class OrdersWriter {
         sb.append("]");
         sb.append("}, ");
     }
+
     private void addProduct(StringBuffer sb, Product product) {
-        addChamp(sb, "{", "\"code\": \"", product.getCode());
-        addChamp(sb, "\", ", "\"color\": \"", getColorFor(product));
-        sb.append("\", ");
+        sb.append("{");
+        addChamp(sb, "code", product.getCode());
+        addChamp(sb, "color", getColorFor(product));
 
         if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
-            addChamp(sb, "\"size\": \"", getSizeFor(product), "\", ");
+            addChamp(sb, "size", getSizeFor(product));
         }
 
-        addChamp(sb, "\"price\": ", "", Double.toString(product.getPrice()));
-        addChamp(sb, ", ", "\"currency\": \"", product.getCurrency());
+        addChamp(sb, "price", product.getPrice());
+        addChamp(sb, "currency", product.getCurrency());
         sb.append("\"}, ");
     }
-    private void addChamp(StringBuffer sb, String s, String sizeFor, String s2) {
-        sb.append(s);
-        sb.append(sizeFor);
-        sb.append(s2);
+    private void addChamp(StringBuffer sb, String nomChamp, Object valeur) {
+        sb.append("\"" + nomChamp + "\": ");
+        if (valeur instanceof String) {
+            sb.append("\"");
+        }
+        sb.append(valeur);
+        if (!nomChamp.equals("currency")) {
+            if (valeur instanceof String) {
+                sb.append("\"");
+            }
+            sb.append(", ");
+        }
     }
 
     private String getSizeFor(Product product) {
