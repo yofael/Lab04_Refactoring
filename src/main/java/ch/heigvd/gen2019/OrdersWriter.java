@@ -1,5 +1,7 @@
 package ch.heigvd.gen2019;
 
+import java.util.Collections;
+
 public class OrdersWriter {
     private Orders orders;
 
@@ -8,36 +10,43 @@ public class OrdersWriter {
     }
 
     public String getContents() {
-        StringBuffer sb = new StringBuffer("{\"orders\": [");
-
-        for (int i = 0; i < orders.getOrdersCount(); i++) {
-            addOrder(sb, orders.getOrder(i));
-        }
-
+        StringBuffer sb = new StringBuffer("{");
+        addTableau(sb, "orders", orders);
         if (orders.getOrdersCount() > 0) {
             sb.delete(sb.length() - 2, sb.length());
         }
-
         return sb.append("]}").toString();
     }
 
     private void addOrder(StringBuffer sb, Order order) {
         sb.append("{");
         addChamp(sb, "id", order.getOrderId());
-
-        sb.append("\"products\": [");
-        for (int j = 0; j < order.getProductsCount(); j++) {
-            addProduct(sb, order.getProduct(j));
-        }
-
+        addTableau(sb, "products", order);
         if (order.getProductsCount() > 0) {
             sb.delete(sb.length() - 2, sb.length());
         }
-
         sb.append("]");
         sb.append("}, ");
     }
 
+    private void addTableau(StringBuffer sb, String name, Object obj) {
+        int max;
+
+        if (obj instanceof Orders) {
+            max = ((Orders) obj).getOrdersCount();
+        } else {
+            max = ((Order) obj).getProductsCount();
+        }
+
+        sb.append("\"" + name + "\": [");
+        for (int j = 0; j < max; j++) {
+            if (obj instanceof Orders) {
+                addOrder(sb, ((Orders) obj).getOrder(j));
+            } else {
+                addProduct(sb, ((Order) obj).getProduct(j));
+            }
+        }
+    }
     private void addProduct(StringBuffer sb, Product product) {
         sb.append("{");
         addChamp(sb, "code", product.getCode());
