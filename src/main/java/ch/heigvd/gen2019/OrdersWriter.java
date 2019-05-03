@@ -11,21 +11,7 @@ public class OrdersWriter {
         StringBuffer sb = new StringBuffer("{\"orders\": [");
 
         for (int i = 0; i < orders.getOrdersCount(); i++) {
-            Order order = orders.getOrder(i);
-            sb.append("{");
-            addChamp(sb, "\"id\": ", "", String.valueOf(order.getOrderId()));
-            sb.append(", ");
-            sb.append("\"products\": [");
-            for (int j = 0; j < order.getProductsCount(); j++) {
-                addProduct(sb, order.getProduct(j));
-            }
-
-            if (order.getProductsCount() > 0) {
-                sb.delete(sb.length() - 2, sb.length());
-            }
-
-            sb.append("]");
-            sb.append("}, ");
+            addOrder(sb, orders.getOrder(i));
         }
 
         if (orders.getOrdersCount() > 0) {
@@ -35,6 +21,22 @@ public class OrdersWriter {
         return sb.append("]}").toString();
     }
 
+    private void addOrder(StringBuffer sb ,Order order) {
+        sb.append("{");
+        addChamp(sb, "\"id\": ", "", String.valueOf(order.getOrderId()));
+        sb.append(", ");
+        sb.append("\"products\": [");
+        for (int j = 0; j < order.getProductsCount(); j++) {
+            addProduct(sb, order.getProduct(j));
+        }
+
+        if (order.getProductsCount() > 0) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+
+        sb.append("]");
+        sb.append("}, ");
+    }
     private void addProduct(StringBuffer sb, Product product) {
         addChamp(sb, "{", "\"code\": \"", product.getCode());
         addChamp(sb, "\", ", "\"color\": \"", getColorFor(product));
