@@ -8,7 +8,7 @@ public class Order {
     private int id;
 
     public Order(int id) {
-            this.id = id; 
+            this.id = id;
     }
 
     public int getOrderId() {

@@ -1,5 +1,10 @@
 package ch.heigvd.gen2019;
 
+import ch.heigvd.gen2019.Order;
+import ch.heigvd.gen2019.Orders;
+import ch.heigvd.gen2019.OrdersWriter;
+import ch.heigvd.gen2019.Product;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +20,7 @@ public class OrdersWriterTest {
 
     @Test
     public void NoOrder() {
-        assertEquals("{\"orders\": []}", new OrdersWriter(new Orders()).getContents());
+        Assertions.assertEquals("{\"orders\": []}", new OrdersWriter(new Orders()).getContents());
     }
 
     @Test
