@@ -13,25 +13,11 @@ public class OrdersWriter {
         for (int i = 0; i < orders.getOrdersCount(); i++) {
             Order order = orders.getOrder(i);
             sb.append("{");
-            sb.append("\"id\": ");
-            sb.append(order.getOrderId());
+            addChamp(sb, "\"id\": ", "", String.valueOf(order.getOrderId()));
             sb.append(", ");
             sb.append("\"products\": [");
             for (int j = 0; j < order.getProductsCount(); j++) {
-                Product product = order.getProduct(j);
-
-                addChamp(sb, "{", "\"code\": \"", product.getCode());
-                addChamp(sb, "\", ", "\"color\": \"", getColorFor(product));
-                sb.append("\", ");
-
-                if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
-                    addChamp(sb, "\"size\": \"", getSizeFor(product), "\", ");
-                }
-
-                sb.append("\"price\": ");
-                sb.append(product.getPrice());
-                addChamp(sb, ", ", "\"currency\": \"", product.getCurrency());
-                sb.append("\"}, ");
+                addProduct(sb, order.getProduct(j));
             }
 
             if (order.getProductsCount() > 0) {
@@ -49,6 +35,19 @@ public class OrdersWriter {
         return sb.append("]}").toString();
     }
 
+    private void addProduct(StringBuffer sb, Product p) {
+        addChamp(sb, "{", "\"code\": \"", product.getCode());
+        addChamp(sb, "\", ", "\"color\": \"", getColorFor(product));
+        sb.append("\", ");
+
+        if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
+            addChamp(sb, "\"size\": \"", getSizeFor(product), "\", ");
+        }
+
+        addChamp(sb, "\"price\": ", "", Double.toString(product.getPrice()));
+        addChamp(sb, ", ", "\"currency\": \"", product.getCurrency());
+        sb.append("\"}, ");
+    }
     private void addChamp(StringBuffer sb, String s, String sizeFor, String s2) {
         sb.append(s);
         sb.append(sizeFor);
