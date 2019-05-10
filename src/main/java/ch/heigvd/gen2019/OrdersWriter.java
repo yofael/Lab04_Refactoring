@@ -11,29 +11,27 @@ public class OrdersWriter {
 
     public String getContents() {
         StringBuffer sb = new StringBuffer("{");
-        addTableau(sb, "orders", orders);
-        if (orders.getElementCount() > 0) {
-            sb.delete(sb.length() - 2, sb.length());
-        }
+        deleteSB(sb, "orders", orders);
         return sb.append("]}").toString();
     }
 
     private void addOrder(StringBuffer sb, Order order) {
         sb.append("{");
         addChamp(sb, "id", order.getOrderId());
-        addTableau(sb, "products", order);
-        if (order.getElementCount() > 0) {
-            sb.delete(sb.length() - 2, sb.length());
-        }
-        sb.append("]");
-        sb.append("}, ");
+        deleteSB(sb, "products", order);
+        sb.append("]}, ");
     }
 
+    private void deleteSB(StringBuffer sb, String s, Object obj) {
+        addTableau(sb, s, obj);
+        if (((JSonTab)obj).getElementCount() > 0) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+    }
     private void addTableau(StringBuffer sb, String name, Object obj) {
         int max;
 
         max =((JSonTab) obj).getElementCount();
-
         sb.append("\"" + name + "\": [");
         for (int j = 0; j < max; j++) {
             Object tmp = ((JSonTab)obj).getElement(j);
@@ -61,15 +59,17 @@ public class OrdersWriter {
 
     private void addChamp(StringBuffer sb, String nomChamp, Object valeur) {
         sb.append("\"" + nomChamp + "\": ");
-        if (valeur instanceof String) {
-            sb.append("\"");
-        }
+        stringTreatment(sb, valeur);
         sb.append(valeur);
         if (!nomChamp.equals("currency")) {
-            if (valeur instanceof String) {
-                sb.append("\"");
-            }
+            stringTreatment(sb, valeur);
             sb.append(", ");
+        }
+    }
+
+    private void stringTreatment(StringBuffer sb, Object valeur) {
+        if (valeur instanceof String) {
+            sb.append("\"");
         }
     }
 
