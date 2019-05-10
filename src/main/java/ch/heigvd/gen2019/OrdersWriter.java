@@ -1,27 +1,11 @@
 package ch.heigvd.gen2019;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class OrdersWriter {
     private Orders orders;
     private StringBuffer sb = new StringBuffer();
-    private Map<Integer, String> getColor = new HashMap<>();
-    private Map<Integer, String> getSize = new HashMap<>();
-
 
     public OrdersWriter(Orders orders) {
         this.orders = orders;
-        getColor.put(1, "blue");
-        getColor.put(2, "red");
-        getColor.put(3, "yellow");
-
-        getSize.put(1, "XS");
-        getSize.put(2, "S");
-        getSize.put(3, "M");
-        getSize.put(4, "L");
-        getSize.put(5, "XL");
-        getSize.put(6, "XXL");
     }
 
     public String getOrder() {
@@ -55,10 +39,10 @@ public class OrdersWriter {
     private void addProduct(Product product) {
         sb.append("{");
         addChamp("code", product.getCode());
-        addChamp("color", getColor.getOrDefault(product.getColor(), "no color"));
+        addChamp("color", product.getColor());
 
-        if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
-            addChamp("size", getSize.getOrDefault(product.getSize(), "Invalid Size"));
+        if (!product.getSize().equals("Invalid Size")) {
+            addChamp("size", product.getSize());
         }
 
         addChamp("price", product.getPrice());
