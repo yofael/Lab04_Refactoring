@@ -1,38 +1,35 @@
 package ch.heigvd.gen2019;
 
 public class Product {
-    public static final int SIZE_NOT_APPLICABLE = -1;
+    private Amount amount;
     private String code;
-    private int color;
-    private int size;
-    private double price;
-    private String currency;
+    private Color color;
+    private Size size;
 
-    public Product(String code, int color, int size, double price, String currency) {
+    public Product(String code, Color color, Size size, Amount amount) {
         this.code = code;
         this.color = color;
         this.size = size;
-        this.price = price;
-        this.currency = currency;
+        this.amount = amount;
     }
 
     public String getCode() {
         return code;
     }
 
-    public int getColor() {
-        return color;
+    public String getColor() {
+        return color.getColor();
     }
 
-    public int getSize() {
-        return size;
+    public String getSize() {
+        return size.getSize();
     }
 
     public double getPrice() {
-        return price;
+        return amount.getPrice();
     }
 
     public String getCurrency() {
-        return currency;
+        return amount.getCurrency();
     }
 }
