@@ -1,34 +1,26 @@
 package ch.heigvd.gen2019;
 
-import java.util.Collections;
-
 public class OrdersWriter {
     private Orders orders;
-
+    private StringBuffer sb = new StringBuffer();
     public OrdersWriter(Orders orders) {
         this.orders = orders;
     }
 
     public String getContents() {
-        StringBuffer sb = new StringBuffer("{");
-        deleteSB(sb, "orders", orders);
+        sb.append("{");
+        deleteSB("orders", orders);
         return sb.append("]}").toString();
     }
 
-    private void addOrder(StringBuffer sb, Order order) {
+    private void addOrder(Order order) {
         sb.append("{");
-        addChamp(sb, "id", order.getOrderId());
-        deleteSB(sb, "products", order);
+        addChamp("id", order.getOrderId());
+        deleteSB("products", order);
         sb.append("]}, ");
     }
 
-    private void deleteSB(StringBuffer sb, String s, Object obj) {
-        addTableau(sb, s, obj);
-        if (((JSonTab)obj).getElementCount() > 0) {
-            sb.delete(sb.length() - 2, sb.length());
-        }
-    }
-    private void addTableau(StringBuffer sb, String name, Object obj) {
+    private void addTableau(String name, Object obj) {
         int max;
 
         max =((JSonTab) obj).getElementCount();
@@ -36,38 +28,45 @@ public class OrdersWriter {
         for (int j = 0; j < max; j++) {
             Object tmp = ((JSonTab)obj).getElement(j);
             if (tmp instanceof Order) {
-                addOrder(sb, (Order) tmp);
+                addOrder((Order) tmp);
             } else {
-                addProduct(sb, (Product) tmp);
+                addProduct((Product) tmp);
             }
         }
     }
 
-    private void addProduct(StringBuffer sb, Product product) {
+    private void addProduct(Product product) {
         sb.append("{");
-        addChamp(sb, "code", product.getCode());
-        addChamp(sb, "color", getColorFor(product));
+        addChamp("code", product.getCode());
+        addChamp("color", getColorFor(product));
 
         if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
-            addChamp(sb, "size", getSizeFor(product));
+            addChamp("size", getSizeFor(product));
         }
 
-        addChamp(sb, "price", product.getPrice());
-        addChamp(sb, "currency", product.getCurrency());
+        addChamp("price", product.getPrice());
+        addChamp("currency", product.getCurrency());
         sb.append("\"}, ");
     }
 
-    private void addChamp(StringBuffer sb, String nomChamp, Object valeur) {
+    private void addChamp(String nomChamp, Object valeur) {
         sb.append("\"" + nomChamp + "\": ");
-        stringTreatment(sb, valeur);
+        stringTreatment(valeur);
         sb.append(valeur);
         if (!nomChamp.equals("currency")) {
-            stringTreatment(sb, valeur);
+            stringTreatment(valeur);
             sb.append(", ");
         }
     }
 
-    private void stringTreatment(StringBuffer sb, Object valeur) {
+    private void deleteSB(String s, Object obj) {
+        addTableau(s, obj);
+        if (((JSonTab)obj).getElementCount() > 0) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+    }
+
+    private void stringTreatment(Object valeur) {
         if (valeur instanceof String) {
             sb.append("\"");
         }
