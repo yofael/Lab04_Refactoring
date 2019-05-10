@@ -1,10 +1,27 @@
 package ch.heigvd.gen2019;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OrdersWriter {
     private Orders orders;
     private StringBuffer sb = new StringBuffer();
+    private Map<Integer, String> getColor = new HashMap<>();
+    private Map<Integer, String> getSize = new HashMap<>();
+
+
     public OrdersWriter(Orders orders) {
         this.orders = orders;
+        getColor.put(1, "blue");
+        getColor.put(2, "red");
+        getColor.put(3, "yellow");
+
+        getSize.put(1, "XS");
+        getSize.put(2, "S");
+        getSize.put(3, "M");
+        getSize.put(4, "L");
+        getSize.put(5, "XL");
+        getSize.put(6, "XXL");
     }
 
     public String getContents() {
@@ -23,10 +40,10 @@ public class OrdersWriter {
     private void addTableau(String name, Object obj) {
         int max;
 
-        max =((JSonTab) obj).getElementCount();
+        max = ((JSonTab) obj).getElementCount();
         sb.append("\"" + name + "\": [");
         for (int j = 0; j < max; j++) {
-            Object tmp = ((JSonTab)obj).getElement(j);
+            Object tmp = ((JSonTab) obj).getElement(j);
             if (tmp instanceof Order) {
                 addOrder((Order) tmp);
             } else {
@@ -38,10 +55,10 @@ public class OrdersWriter {
     private void addProduct(Product product) {
         sb.append("{");
         addChamp("code", product.getCode());
-        addChamp("color", getColorFor(product));
+        addChamp("color", getColor.getOrDefault(product.getColor(), "no color"));
 
         if (product.getSize() != Product.SIZE_NOT_APPLICABLE) {
-            addChamp("size", getSizeFor(product));
+            addChamp("size", getSize.getOrDefault(product.getSize(), "Invalid Size"));
         }
 
         addChamp("price", product.getPrice());
@@ -61,7 +78,7 @@ public class OrdersWriter {
 
     private void deleteSB(String s, Object obj) {
         addTableau(s, obj);
-        if (((JSonTab)obj).getElementCount() > 0) {
+        if (((JSonTab) obj).getElementCount() > 0) {
             sb.delete(sb.length() - 2, sb.length());
         }
     }
@@ -71,37 +88,4 @@ public class OrdersWriter {
             sb.append("\"");
         }
     }
-
-    private String getSizeFor(Product product) {
-        switch (product.getSize()) {
-            case 1:
-                return "XS";
-            case 2:
-                return "S";
-            case 3:
-                return "M";
-            case 4:
-                return "L";
-            case 5:
-                return "XL";
-            case 6:
-                return "XXL";
-            default:
-                return "Invalid Size";
-        }
-    }
-
-    private String getColorFor(Product product) {
-        switch (product.getColor()) {
-            case 1:
-                return "blue";
-            case 2:
-                return "red";
-            case 3:
-                return "yellow";
-            default:
-                return "no color";
-        }
-    }
-
 }
