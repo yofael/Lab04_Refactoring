@@ -24,7 +24,7 @@ public class OrdersWriter {
         getSize.put(6, "XXL");
     }
 
-    public String getContents() {
+    public String getOrder() {
         sb.append("{");
         deleteSB("orders", orders);
         return sb.append("]}").toString();
