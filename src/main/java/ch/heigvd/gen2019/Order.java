@@ -3,7 +3,7 @@ package ch.heigvd.gen2019;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Order implements JSonTab {
     private List<Product> products = new ArrayList<>();
     private int id;
 
@@ -15,15 +15,17 @@ public class Order {
         return id;
     }
 
-    public int getProductsCount() {
+    public void AddProduct(Product product) {
+        products.add(product);
+    }
+
+    @Override
+    public int getElementCount() {
         return products.size();
     }
 
-    public Product getProduct(int j) {
+    @Override
+    public Object getElement(int j) {
         return products.get(j);
-    }
-
-    public void AddProduct(Product product) {
-        products.add(product);
     }
 }

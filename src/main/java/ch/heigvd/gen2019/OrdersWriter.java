@@ -12,7 +12,7 @@ public class OrdersWriter {
     public String getContents() {
         StringBuffer sb = new StringBuffer("{");
         addTableau(sb, "orders", orders);
-        if (orders.getOrdersCount() > 0) {
+        if (orders.getElementCount() > 0) {
             sb.delete(sb.length() - 2, sb.length());
         }
         return sb.append("]}").toString();
@@ -22,7 +22,7 @@ public class OrdersWriter {
         sb.append("{");
         addChamp(sb, "id", order.getOrderId());
         addTableau(sb, "products", order);
-        if (order.getProductsCount() > 0) {
+        if (order.getElementCount() > 0) {
             sb.delete(sb.length() - 2, sb.length());
         }
         sb.append("]");
@@ -32,21 +32,19 @@ public class OrdersWriter {
     private void addTableau(StringBuffer sb, String name, Object obj) {
         int max;
 
-        if (obj instanceof Orders) {
-            max = ((Orders) obj).getOrdersCount();
-        } else {
-            max = ((Order) obj).getProductsCount();
-        }
+        max =((JSonTab) obj).getElementCount();
 
         sb.append("\"" + name + "\": [");
         for (int j = 0; j < max; j++) {
-            if (obj instanceof Orders) {
-                addOrder(sb, ((Orders) obj).getOrder(j));
+            Object tmp = ((JSonTab)obj).getElement(j);
+            if (tmp instanceof Order) {
+                addOrder(sb, (Order) tmp);
             } else {
-                addProduct(sb, ((Order) obj).getProduct(j));
+                addProduct(sb, (Product) tmp);
             }
         }
     }
+
     private void addProduct(StringBuffer sb, Product product) {
         sb.append("{");
         addChamp(sb, "code", product.getCode());
@@ -60,6 +58,7 @@ public class OrdersWriter {
         addChamp(sb, "currency", product.getCurrency());
         sb.append("\"}, ");
     }
+
     private void addChamp(StringBuffer sb, String nomChamp, Object valeur) {
         sb.append("\"" + nomChamp + "\": ");
         if (valeur instanceof String) {
@@ -105,4 +104,5 @@ public class OrdersWriter {
                 return "no color";
         }
     }
+
 }
