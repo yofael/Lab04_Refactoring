@@ -31,23 +31,9 @@ public class OrdersWriter {
             if (tmp instanceof Order) {
                 addOrder((Order) tmp);
             } else {
-                addProduct((Product) tmp);
+               sb.append(((Product) tmp).getJson());
             }
         }
-    }
-
-    private void addProduct(Product product) {
-        sb.append("{");
-        addChamp("code", product.getCode());
-        addChamp("color", product.getColor());
-
-        if (!product.getSize().equals("Invalid Size")) {
-            addChamp("size", product.getSize());
-        }
-
-        addChamp("price", product.getPrice());
-        addChamp("currency", product.getCurrency());
-        sb.append("\"}, ");
     }
 
     private void addChamp(String nomChamp, Object valeur) {
