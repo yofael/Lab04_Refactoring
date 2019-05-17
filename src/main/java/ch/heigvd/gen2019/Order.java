@@ -31,6 +31,11 @@ public class Order extends JsonCamp implements JSonTab  {
 
     @Override
     public String getJson() {
-        return null;
+
+        sb.append("{");
+        addChamp("id", this.getOrderId());
+        addTableau("products", this);
+        sb.append("]}, ");
+        return sb.toString();
     }
 }
