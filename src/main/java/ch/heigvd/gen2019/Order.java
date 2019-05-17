@@ -3,7 +3,7 @@ package ch.heigvd.gen2019;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order extends JsonCamp implements JSonTab  {
+public class Order extends JsonUtile implements JSonTab  {
     private List<Product> products = new ArrayList<>();
     private int id;
 
@@ -35,7 +35,7 @@ public class Order extends JsonCamp implements JSonTab  {
         sb.append("{");
         addChamp("id", this.getOrderId());
         addTableau("products", this);
-        sb.append("]}, ");
+        sb.append("}, ");
         return sb.toString();
     }
 }

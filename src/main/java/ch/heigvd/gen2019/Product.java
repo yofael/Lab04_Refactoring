@@ -1,6 +1,6 @@
 package ch.heigvd.gen2019;
 
-public class Product  extends JsonCamp {
+public class Product  extends JsonUtile {
     private Amount amount;
     private String code;
     private Color color;
