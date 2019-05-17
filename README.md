@@ -1,3 +1,3 @@
 # Lab04_Refactoring
 
-## Rafael Da Cunha Garcia & Yohan Simonet
+## Rafael Da Cunha Garcia & Yoann Simonet
